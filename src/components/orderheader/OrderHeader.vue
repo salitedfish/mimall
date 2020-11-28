@@ -1,5 +1,7 @@
 <template>
-  
+  <div>
+    this is order header
+  </div>
 </template>
 
 <script>

@@ -1,14 +1,15 @@
 <template>
   <div>
-    these is orderpay
+    底部
   </div>
 </template>
 
 <script>
 export default {
-  name: "orderpay",
-};
+  name: "nav-footer",
+}
 </script>
 
 <style>
+
 </style>

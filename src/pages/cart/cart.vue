@@ -1,7 +1,7 @@
 <template>
   <div>
     <order-header></order-header>
-    <router-view></router-view>
+      these is cart
     <order-footer></order-footer>
   </div>
 </template>
@@ -10,6 +10,7 @@
 import OrderHeader from "../../components/orderheader/OrderHeader.vue"
 import OrderFooter from "../../components/orderfooter/Orderfooter.vue"
 export default {
+  name: "cart",
   components: {
     OrderHeader,
     OrderFooter
