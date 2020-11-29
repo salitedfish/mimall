@@ -6,6 +6,7 @@
 
 <script>
 
+
 export default {
   name: "App",
   data() {
@@ -27,9 +28,7 @@ export default {
 
 
 <style>
-div {
-  margin-top: 20px;
-  text-align: center;
-}
+@import "./assets/scss/reset.scss";
+/* @import "./assets/scss/config.scss" */
 
 </style>
