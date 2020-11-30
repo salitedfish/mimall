@@ -9,9 +9,11 @@
           <a href="javascript:">协议规则</a>
         </div>
         <div class="topbar-user">
-          <a href="javascript:">登录</a>
-          <a href="javascript:">注册</a>
-          <a href="javascript:" class="my-cart">
+          <a href="javascript:" v-if="username">{{ username }}</a>
+          <a href="javascript:" v-else v-on:click="login">登录</a>
+          <a href="javascript:" v-if="username">我的订单</a>
+          <a href="javascript:" v-else>注册</a>
+          <a href="javascript:" class="my-cart" v-on:click="goToCart">
             <span class="icon-cart"> </span>
             购物车
           </a>
@@ -28,13 +30,20 @@
             <span>小米手机</span>
             <div class="children">
               <ul>
-                <li class="product">
-                  <a href="" target="_blank">
+                <li
+                  class="product"
+                  v-for="(item, index) in phoneList"
+                  :key="index"
+                >
+                  <a :href="'/#/product/' + item.id" target="_blank">
                     <div class="pro-img">
-                      <img src="" alt="" />
+                      <img
+                        v-bind:src="item.mainImage"
+                        v-bind:alt="item.subtitle"
+                      />
                     </div>
-                    <div class="pro-name"></div>
-                    <div class="pro-price"></div>
+                    <div class="pro-name">{{ item.name }}</div>
+                    <div class="pro-price">{{ item.price | currency }}</div>
                   </a>
                 </li>
               </ul>
@@ -217,28 +226,43 @@ export default {
   name: "nav-header",
   data() {
     return {
-      username: "jack",
+      username: "Amon",
       phoneList: [],
     };
+  },
+  filters: {
+    currency(val) {
+      if (!val) return "0.00";
+      return "$" + val.toFixed(2) + "元";
+    },
   },
   mounted() {
     this.getProductList();
   },
   methods: {
+    login() {
+      this.$router.push("/login")
+    },
     getProductList() {
       //给请求添加默认根路径和端口
       axios
         .get("/products", {
           params: {
             categoryId: "100012",
+            pageSize: 6,
           },
         })
         .then((res) => {
-          if (res.list > 6) {
+          // console.log(res)
+          if (res.list.length >= 6) {
             this.phoneList = res.list.slice(0, 6);
+            // console.log(this.phoneList)
           }
         });
     },
+    goToCart() {
+      this.$router.push("/cart")
+    }
   },
 };
 </script>
@@ -331,8 +355,9 @@ export default {
             overflow: hidden;
             border-top: 1px solid #e555;
             box-shadow: 0px 7px 6px 0px rgba(0, 0, 0, 0.11);
-            z-index: 10px;
+            z-index: 10;
             transition: all 0.5s;
+            background-color: #fff;
             .product {
               position: relative;
               float: left;
