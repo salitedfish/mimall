@@ -160,7 +160,6 @@
         </a>
       </div>
     </div>
-
     <div class="product-box">
       <div class="container">
         <h2>手机</h2>
@@ -181,7 +180,7 @@
                 <div class="item-info">
                   <h3>{{ item.name }}</h3>
                   <p>{{ item.subtitle }}}</p>
-                  <p class="price">{{ item.price | currency }}</p>
+                  <p class="price" v-on:click="1">{{ item.price | currency }}</p>
                 </div>
               </div>
             </div>
@@ -190,15 +189,28 @@
       </div>
     </div>
     <service-bar></service-bar>
+    <modal
+      title="提示"
+      sureText="查看购物车"
+      btnType="1"
+      modalType="middle"
+      :showModal="modal"
+    >
+    <template v-slot:modal-body>
+      <p>商品添加成功</p>
+    </template>
+    </modal>
   </div>
 </template>
 
 <script>
-import ServiceBar from "../../components/servicebar/ServiceBar.vue";
-import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import "swiper/css/swiper.css";
 
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import axios from "axios";
+
+import ServiceBar from "../../components/servicebar/ServiceBar.vue";
+import Modal from "../../components/modal/modal.vue";
 
 export default {
   name: "index",
@@ -299,12 +311,14 @@ export default {
         },
       ],
       phoneList: [],
+      modal: false
     };
   },
   components: {
     Swiper,
     SwiperSlide,
     ServiceBar,
+    Modal,
   },
   mounted() {
     this.init();
@@ -315,13 +329,17 @@ export default {
         .get("/products", {
           params: {
             categoryId: 100012,
-            pageSize: 8,
+            pageSize: 14,
           },
         })
         .then((res) => {
+          res.list = res.list.slice(6, 14);
           this.phoneList = [res.list.slice(0, 4), res.list.slice(4, 8)];
         });
     },
+    // inCart() {
+    //   this.modal = true;
+    // }
   },
   filters: {
     currency(val) {
@@ -486,7 +504,7 @@ export default {
             .item-img {
               img {
                 height: 195px;
-                width: 100%
+                width: 100%;
               }
             }
             .item-info {
