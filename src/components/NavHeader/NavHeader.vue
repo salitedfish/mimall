@@ -9,13 +9,13 @@
           <a href="javascript:">协议规则</a>
         </div>
         <div class="topbar-user">
-          <a href="javascript:" v-if="username">{{ username }}</a>
+          <a href="javascript:" v-if="changeUsername">{{ changeUsername }}</a>
           <a href="javascript:" v-else v-on:click="login">登录</a>
-          <a href="javascript:" v-if="username">我的订单</a>
-          <a href="javascript:" v-else>注册</a>
+          <a href="javascript:" v-if="changeUsername">我的订单</a>
+          <a href="javascript:" v-else v-on:click="login">注册</a>
           <a href="javascript:" class="my-cart" v-on:click="goToCart">
             <span class="icon-cart"> </span>
-            购物车
+            购物车({{cartCount}})
           </a>
         </div>
       </div>
@@ -37,10 +37,7 @@
                 >
                   <a :href="'/#/product/' + item.id" target="_blank">
                     <div class="pro-img">
-                      <img
-                        v-bind:src="item.mainImage"
-                        v-bind:alt="item.subtitle"
-                      />
+                      <img v-lazy="item.mainImage" v-bind:alt="item.subtitle" />
                     </div>
                     <div class="pro-name">{{ item.name }}</div>
                     <div class="pro-price">{{ item.price | currency }}</div>
@@ -226,7 +223,6 @@ export default {
   name: "nav-header",
   data() {
     return {
-      username: "Amon",
       phoneList: [],
     };
   },
@@ -239,9 +235,18 @@ export default {
   mounted() {
     this.getProductList();
   },
+  computed: {
+    changeUsername() {
+      return this.$store.state.username;
+    },
+    cartCount() {
+      return this.$store.state.cartCount;
+    }
+  },
   methods: {
+    //跳转到登录界面，这里把注册和登录做到一起了
     login() {
-      this.$router.push("/login")
+      this.$router.push("/login");
     },
     getProductList() {
       //给请求添加默认根路径和端口
@@ -261,8 +266,8 @@ export default {
         });
     },
     goToCart() {
-      this.$router.push("/cart")
-    }
+      this.$router.push("/cart");
+    },
   },
 };
 </script>
@@ -290,6 +295,7 @@ export default {
         background-color: #ff6600;
         text-align: center;
         color: #ffffff;
+        margin-right: 0;
         .icon-cart {
           @include bgImg(
             16px,
@@ -345,13 +351,13 @@ export default {
             cursor: pointer;
           }
           .children {
+            display: none; //临时
             height: 0;
             position: absolute;
             top: 112px;
             left: 0;
             width: 1226px;
-            height: 0px;
-            opacity: 0;
+            height: 220px;
             overflow: hidden;
             border-top: 1px solid #e555;
             box-shadow: 0px 7px 6px 0px rgba(0, 0, 0, 0.11);
@@ -402,8 +408,7 @@ export default {
           &:hover {
             color: $colorA;
             .children {
-              height: 220px;
-              opacity: 1;
+              display: block;
             }
           }
         }

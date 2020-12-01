@@ -11,7 +11,7 @@
                   <li v-for="(sub, num) in item" :key="num">
                     <a :href="sub ? '/#/product/' + sub.id : ''">
                       <img
-                        :src="sub ? sub.img : '/images/item-box-1.png'"
+                        v-lazy="sub ? sub.img : '/images/item-box-1.png'"
                         alt=""
                       />
                       {{ sub ? sub.name : "小米9" }}
@@ -27,7 +27,7 @@
                   <li v-for="(sub, num) in item" :key="num">
                     <a :href="sub ? '/#/product/' + sub.id : ''">
                       <img
-                        :src="sub ? sub.img : '/images/item-box-1.png'"
+                        v-lazy="sub ? sub.img : '/images/item-box-1.png'"
                         alt=""
                       />
                       {{ sub ? sub.name : "小米9" }}
@@ -43,7 +43,7 @@
                   <li v-for="(sub, num) in item" :key="num">
                     <a :href="sub ? '/#/product/' + sub.id : ''">
                       <img
-                        :src="sub ? sub.img : '/images/item-box-1.png'"
+                        v-lazy="sub ? sub.img : '/images/item-box-1.png'"
                         alt=""
                       />
                       {{ sub ? sub.name : "小米9" }}
@@ -59,7 +59,7 @@
                   <li v-for="(sub, num) in item" :key="num">
                     <a :href="sub ? '/#/product/' + sub.id : ''">
                       <img
-                        :src="sub ? sub.img : '/images/item-box-1.png'"
+                        v-lazy="sub ? sub.img : '/images/item-box-1.png'"
                         alt=""
                       />
                       {{ sub ? sub.name : "小米9" }}
@@ -75,7 +75,7 @@
                   <li v-for="(sub, num) in item" :key="num">
                     <a :href="sub ? '/#/product/' + sub.id : ''">
                       <img
-                        :src="sub ? sub.img : '/images/item-box-1.png'"
+                        v-lazy="sub ? sub.img : '/images/item-box-1.png'"
                         alt=""
                       />
                       {{ sub ? sub.name : "小米9" }}
@@ -91,7 +91,7 @@
                   <li v-for="(sub, num) in item" :key="num">
                     <a :href="sub ? '/#/product/' + sub.id : ''">
                       <img
-                        :src="sub ? sub.img : '/images/item-box-1.png'"
+                        v-lazy="sub ? sub.img : '/images/item-box-1.png'"
                         alt=""
                       />
                       {{ sub ? sub.name : "小米9" }}
@@ -107,7 +107,7 @@
                   <li v-for="(sub, num) in item" :key="num">
                     <a :href="sub ? '/#/product/' + sub.id : ''">
                       <img
-                        :src="sub ? sub.img : '/images/item-box-1.png'"
+                        v-lazy="sub ? sub.img : '/images/item-box-1.png'"
                         alt=""
                       />
                       {{ sub ? sub.name : "小米9" }}
@@ -123,7 +123,7 @@
                   <li v-for="(sub, num) in item" :key="num">
                     <a :href="sub ? '/#/product/' + sub.id : ''">
                       <img
-                        :src="sub ? sub.img : '/images/item-box-1.png'"
+                        v-lazy="sub ? sub.img : '/images/item-box-1.png'"
                         alt=""
                       />
                       {{ sub ? sub.name : "小米9" }}
@@ -151,12 +151,12 @@
           v-for="(item, index) in adsList"
           :key="index"
         >
-          <img :src="item.img" alt="" />
+          <img v-lazy="item.img" alt="" />
         </a>
       </div>
       <div class="banner">
         <a href="/#/product/30">
-          <img src="/images/banner-1.png" alt="" />
+          <img v-lazy="'/images/banner-1.png'" alt="" />
         </a>
       </div>
     </div>
@@ -166,7 +166,7 @@
         <div class="wrapper">
           <div class="banner-left">
             <a href="/#/product/35">
-              <img src="/images/mix-alpha.jpg" alt="" />
+              <img v-lazy="'/images/mix-alpha.jpg'" alt="" />
             </a>
           </div>
           <div class="list-box">
@@ -175,12 +175,14 @@
                 <span v-show="num % 2 == 0" class="new-pro">新品</span>
                 <span v-show="num % 2 == 1" class="kill-pro">秒杀</span>
                 <div class="item-img">
-                  <img :src="item.mainImage" alt="" />
+                  <img v-lazy="item.mainImage" alt="" />
                 </div>
                 <div class="item-info">
                   <h3>{{ item.name }}</h3>
                   <p>{{ item.subtitle }}}</p>
-                  <p class="price" v-on:click="1">{{ item.price | currency }}</p>
+                  <p class="price" v-on:click="addCart(item.id)">
+                    {{ item.price | currency }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -195,10 +197,12 @@
       btnType="1"
       modalType="middle"
       :showModal="modal"
+      @submit="gotoCart"
+      @cancel="modal=false"
     >
-    <template v-slot:modal-body>
-      <p>商品添加成功</p>
-    </template>
+      <template v-slot:modal-body>
+        <p>商品添加成功，点击查看购物车</p>
+      </template>
     </modal>
   </div>
 </template>
@@ -311,7 +315,7 @@ export default {
         },
       ],
       phoneList: [],
-      modal: false
+      modal: false,
     };
   },
   components: {
@@ -337,9 +341,21 @@ export default {
           this.phoneList = [res.list.slice(0, 4), res.list.slice(4, 8)];
         });
     },
-    // inCart() {
-    //   this.modal = true;
-    // }
+    addCart(id) {
+      id;
+      this.$store.dispatch("saveCartCount")
+      this.modal = true;
+      // axios.post("/carts",{
+      //   productId: id,
+      //   selected: true
+      // }).then(()=>{
+
+      // }).catch(()=>{
+      // })
+    },
+    gotoCart() {
+      this.$router.push("/cart");
+    },
   },
   filters: {
     currency(val) {
@@ -494,6 +510,7 @@ export default {
               line-height: 24px;
               color: $colorG;
               border-radius: 5px;
+              margin-top: 5px;
               &.new-pro {
                 background-color: #7ecf68;
               }

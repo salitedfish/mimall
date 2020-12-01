@@ -1,3 +1,4 @@
+//此项目服务器设置了cors跨域，所以其实不用代理也可以
 module.exports = {
   devServer: {
     host: "localhost",
