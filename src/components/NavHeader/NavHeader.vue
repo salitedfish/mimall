@@ -15,7 +15,7 @@
           <a href="javascript:" v-else v-on:click="login">注册</a>
           <a href="javascript:" class="my-cart" v-on:click="goToCart">
             <span class="icon-cart"> </span>
-            购物车({{cartCount}})
+            购物车({{ cartCount }})
           </a>
         </div>
       </div>
@@ -241,7 +241,7 @@ export default {
     },
     cartCount() {
       return this.$store.state.cartCount;
-    }
+    },
   },
   methods: {
     //跳转到登录界面，这里把注册和登录做到一起了
@@ -351,18 +351,17 @@ export default {
             cursor: pointer;
           }
           .children {
-            display: none; //临时
+            // display: none; //临时
             height: 0;
             position: absolute;
             top: 112px;
             left: 0;
             width: 1226px;
-            height: 220px;
+            // height: 220px;
             overflow: hidden;
-            border-top: 1px solid #e555;
-            box-shadow: 0px 7px 6px 0px rgba(0, 0, 0, 0.11);
+            border-top: 1px solid $colorH;
             z-index: 10;
-            transition: all 0.5s;
+            transition: height 0.5s;
             background-color: #fff;
             .product {
               position: relative;
@@ -372,6 +371,7 @@ export default {
               font-size: 12px;
               line-height: 12px;
               text-align: center;
+
               &:before {
                 content: "";
                 position: absolute;
@@ -408,7 +408,9 @@ export default {
           &:hover {
             color: $colorA;
             .children {
+              height: 220px;
               display: block;
+              box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.2);
             }
           }
         }

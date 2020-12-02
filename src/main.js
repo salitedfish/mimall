@@ -21,9 +21,9 @@ axios.interceptors.response.use(function (res) {
   if (result.status == 0) {
     return result.data;
   } else if (result.status == 10) {
-    if (path != '#/index') window.location.href = "/#/login";
+    console.log(path)
+    if (path != "#/index" && path.indexOf("#/product") == -1) window.location.href = "/#/login";
   } else {
-    console.log(result.msg);
     return Promise.reject(res)
   }
 });

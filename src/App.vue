@@ -21,6 +21,8 @@ export default {
       axios
         .get("/user")
         .then((res) => {
+          console.log("测试一");
+
           //页面初始化时就携带cookie发送请求，服务器验证通过会返回用户信息
           //根据用户信息更改vuex的参数,然后在请求购物车信息
           this.$store.dispatch("saveUserName", res.username);
@@ -31,7 +33,7 @@ export default {
         });
     },
     getCartCount() {
-      axios.get("/carts/products/sum").then((res) => {
+      axios.get("/carts/products/sum").then((res=0) => {
         this.$store.dispatch("saveCartCount", res);
       });
     },
