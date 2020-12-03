@@ -26,7 +26,9 @@
           </div>
           <div class="tips">
             <div class="sms" v-on:click="register">输入账号密码点击注册</div>
-            <div class="reg" v-on:click="register">立即注册<span>|</span>忘记密码？</div>
+            <div class="reg" v-on:click="register">
+              立即注册<span>|</span>忘记密码？
+            </div>
           </div>
         </div>
       </div>
@@ -50,6 +52,7 @@
 </template>
 
 <script>
+import {Message} from "element-ui"
 import axios from "axios";
 
 export default {
@@ -71,6 +74,8 @@ export default {
           password,
         })
         .then((res) => {
+          //登录的时候同时也获取一下购物车数量，不然等跳到主页面时，购物车显示为0
+          this.getCartCount();
           //将userId保存在cookie中
           this.$cookie.set("userId", res.id);
           //将vuex中的saveUserName改为username
@@ -79,7 +84,18 @@ export default {
           this.$router.push("/index");
         })
         .catch(() => {
-          console.log("登录失败");
+          Message.warning("登录失败");
+        });
+    },
+    getCartCount() {
+      axios
+        .get("/carts/products/sum")
+        .then((res = 0) => {
+          // console.log(res)
+          this.$store.dispatch("saveCartCount", res);
+        })
+        .catch(() => {
+          Message.warning("还未登录》App");
         });
     },
     //点击注册
@@ -91,12 +107,12 @@ export default {
           email: "Amon@qq.com",
         })
         .then(() => {
-          alert("注册成功");
+          Message.info("注册成功");
         })
         //因为这个项目服务器并不会返回错误信息，所以main.js
         //里面根据请求返回的status模拟状态信息，如果失败则返回
         //了一个promise.reject(res)
-        .catch(()=>{});
+        .catch(() => {});
     },
   },
 };
