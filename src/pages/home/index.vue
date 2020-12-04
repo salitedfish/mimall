@@ -352,7 +352,7 @@ export default {
           this.$store.dispatch("saveCartCount", res.cartTotalQuantity);
           // this.$router.push("/cart");
         }).catch(()=>{
-          console.log("请登录》index")
+          this.$router.push("/login")
         });
     },
     gotoCart() {

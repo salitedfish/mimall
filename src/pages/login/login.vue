@@ -77,7 +77,7 @@ export default {
           //登录的时候同时也获取一下购物车数量，不然等跳到主页面时，购物车显示为0
           this.getCartCount();
           //将userId保存在cookie中
-          this.$cookie.set("userId", res.id);
+          this.$cookie.set("userId", res.id,{expires:'Session'});
           //将vuex中的saveUserName改为username
           this.$store.dispatch("saveUserName", res.username);
           //跳转到主页面

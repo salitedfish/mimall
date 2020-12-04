@@ -31,7 +31,7 @@ export default {
           this.getCartCount();
         })
         .catch(() => {
-          console.log("must login");
+          // console.log("must login");
         });
     },
     getCartCount() {
@@ -42,7 +42,7 @@ export default {
           this.$store.dispatch("saveCartCount", res);
         })
         .catch(() => {
-          console.log("must login");
+          // console.log("must login");
         });
     },
   },

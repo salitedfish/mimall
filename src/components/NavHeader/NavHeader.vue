@@ -10,6 +10,7 @@
         </div>
         <div class="topbar-user">
           <a href="javascript:" v-if="changeUsername">{{ changeUsername }}</a>
+          <a href="javascript:" v-if="changeUsername" v-on:click="logout">退出</a>
           <a href="javascript:" v-else v-on:click="login">登录</a>
           <a href="javascript:" v-if="changeUsername">我的订单</a>
           <a href="javascript:" v-else v-on:click="login">注册</a>
@@ -247,6 +248,14 @@ export default {
     //跳转到登录界面，这里把注册和登录做到一起了
     login() {
       this.$router.push("/login");
+    },
+    logout() {
+      axios.post("/user/logout").then(()=>{
+        this.$message.success("退出成功")
+        this.$cookie.set('userId','',{expires:'-1'})
+        this.$store.dispatch("saveUserName","")
+        this.$store.dispatch("saveCartCount",0)
+      })
     },
     getProductList() {
       //给请求添加默认根路径和端口
