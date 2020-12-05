@@ -28,37 +28,29 @@ export default {
       tips: "",
     };
   },
+  methods: {
+    routeRender() {
+      let path = this.$route.path;
+      if (path == "/order/confirm") {
+        this.title = "订单确认";
+        this.tips = "请认真填写地址";
+      } else if (path == "/order/list") {
+        this.title = "订单列表";
+        this.tips = "请认真查看订单列表";
+      } else if (path == "/order/pay") {
+        this.title = "订单支付";
+        this.tips = "谨防诈骗电话和钓鱼网站";
+      } else {
+        this.title = "等待跳转支付";
+        this.tips = "谨防诈骗电话和钓鱼网站";
+      }
+    },
+  },
   mounted() {
-    let path = this.$route.path;
-    if (path == "/order/confirm") {
-      this.title = "订单确认";
-      this.tips = "请认真填写地址";
-    } else if (path == "/order/list") {
-      this.title = "订单列表";
-      this.tips = "麻烦认真查看订单列表";
-    } else if (path == "/order/pay") {
-      this.title = "订单支付";
-      this.tips = "谨防诈骗电话和钓鱼网站";
-    } else {
-      this.title = "等待跳转支付";
-      this.tips = "谨防诈骗电话和钓鱼网站";
-    }
+    this.routeRender()
   },
   updated() {
-    let path = this.$route.path;
-    if (path == "/order/confirm") {
-      this.title = "订单确认";
-      this.tips = "请认真填写地址";
-    } else if (path == "/order/list") {
-      this.title = "订单列表";
-      this.tips = "麻烦认真查看订单列表";
-    } else if (path == "/order/pay") {
-      this.title = "订单支付";
-      this.tips = "谨防诈骗电话和钓鱼网站";
-    } else {
-      this.title = "等待跳转支付";
-      this.tips = "谨防诈骗电话和钓鱼网站";
-    }
+    this.routeRender()
   },
 };
 </script>
