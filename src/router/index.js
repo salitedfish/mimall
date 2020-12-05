@@ -27,16 +27,25 @@ export default new Router({
           path:"/index",
           name: "index",
           component: Index,
+          meta: {
+            title: "小米商城"
+          }
         },
         {
           path: "/product/:id",
           name: "product",
           component: Product,
+          meta: {
+            title: "产品详情"
+          }
         },
         {
           path: "/detail/:id",
           name: "detail",
           component: Detail,
+          meta: {
+            title: "产品参数"
+          }
         }
       ]
     },
@@ -49,21 +58,33 @@ export default new Router({
           path: "confirm",
           name: "orderconfirm",
           component: OrderConfirm,
+          meta: {
+            title: "订单确认"
+          }
         },
         {
           path: "list",
           name: "orderlist",
           component: OrderList,
+          meta: {
+            title: "订单列表"
+          }
         },
         {
           path: "pay",
           name: "orderpay",
           component: OrderPay,
+          meta: {
+            title: "订单支付"
+          }
         },
         {
           path: "alipay",
           name: "alipay",
-          component: Alipay
+          component: Alipay,
+          meta: {
+            title: "阿里支付"
+          }
         }
       ]
     },
@@ -71,11 +92,17 @@ export default new Router({
       path: "/cart",
       name: "cart",
       component: Cart,
+      meta: {
+        title: "购物车"
+      }
     },
     {
       path: "/login",
       name: "login",
       component: Login,
+      meta: {
+        title: "登录/注册"
+      }
     }
 
   ]

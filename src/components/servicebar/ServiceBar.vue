@@ -40,6 +40,7 @@ export default {
     width: 24.9%;
     text-align: center;
     border-right: 1px solid #e5e5e5;
+    // z-index: -1;
     span {
       display: inline-block;
       width: 20px;

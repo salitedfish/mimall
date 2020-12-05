@@ -31,7 +31,19 @@ axios.interceptors.response.use(function (res) {
   } else {
     return Promise.reject(res)
   }
+}, function (res) {
+  let result = res.response
+  if (result.status == 500) {
+    return Promise.reject(result.data.message)
+  }
 });
+
+
+router.beforeEach((to,from,next)=>{
+  window.document.title = to.meta.title==undefined? "Vue App":to.meta.title;
+  // from()
+  next()
+})
 
 Vue.use(VueCookie)
 Vue.use(VueLazyLoad, {
