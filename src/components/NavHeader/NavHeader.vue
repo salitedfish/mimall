@@ -12,7 +12,7 @@
           <a href="javascript:" v-if="changeUsername">{{ changeUsername }}</a>
           <a href="javascript:" v-if="changeUsername" v-on:click="logout">退出</a>
           <a href="javascript:" v-else v-on:click="login">登录</a>
-          <a href="javascript:" v-if="changeUsername">我的订单</a>
+          <a href="javascript:" v-if="changeUsername" @click="goOrderList">我的订单</a>
           <a href="javascript:" v-else v-on:click="login">注册</a>
           <a href="javascript:" class="my-cart" v-on:click="goToCart">
             <span class="icon-cart"> </span>
@@ -277,6 +277,9 @@ export default {
     goToCart() {
       this.$router.push("/cart");
     },
+    goOrderList() {
+      this.$router.push("/order/list")
+    }
   },
 };
 </script>

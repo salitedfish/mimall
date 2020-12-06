@@ -4,6 +4,7 @@
       <div class="container">
         <div class="order-box">
           <loading v-if="showLoading"></loading>
+          <no-data v-if="!showLoading && orderList.length == 0"></no-data>
           <div class="order" v-for="(item, index) in orderList" :key="index">
             <div class="order-title">
               <div class="item-info fl">
@@ -29,7 +30,7 @@
                   :key="ind"
                 >
                   <div class="good-img">
-                    <img :src="good.productImage" alt="" />
+                    <img v-lazy="good.productImage" alt="" />
                   </div>
                   <div class="good-name">
                     <div class="p-name">{{ good.productName }}</div>
@@ -49,11 +50,17 @@
               </div>
             </div>
           </div>
-          <!-- <a-pagination v-if="total > 0" show-less-items> </a-pagination>
-          <div class="load-more">
-            <a-button type="primary">加载更多</a-button>
-          </div>
-          <no-data></no-data> -->
+          <el-pagination background 
+          layout="prev,pager,next" 
+          :pageSize="pageSize"
+          :total="total"
+          @current-change="handleChange"
+          class="pagination"
+          >
+          </el-pagination>
+          <!-- <div class="load-more">
+            <el-button type="primary" :loading="showLoading">加载更多</el-button>
+          </div> -->
         </div>
       </div>
     </div>
@@ -62,35 +69,58 @@
 
 <script>
 import axios from "axios";
-import Loading from "../../components/payloading/payLoading.vue"
+import Loading from "../../components/payloading/payLoading.vue";
+import NoData from "../../components/nodata/noData.vue";
+import { Pagination,Button } from "element-ui";
 export default {
   name: "orderlist",
   data() {
     return {
       orderList: [],
       showLoading: true,
+      pageSize: 5,
+      pageNum: 1,
+      total: 0,
     };
   },
   components: {
-    Loading
+    Loading,
+    NoData,
+    [Pagination.name]: Pagination,
+    [Button.name]: Button,
   },
   mounted() {
     this.getOrderList();
   },
   methods: {
     getOrderList() {
-      axios.get("/orders").then((res) => {
-        this.orderList = res.list;
-        this.showLoading = false;
-      });
+      axios
+        .get("/orders",{
+          params: {
+            pageSize: 5,
+            pageNum: this.pageNum
+          }
+        })
+        .then((res) => {
+          this.orderList = res.list;
+          this.total = res.total;
+          this.showLoading = false;
+        })
+        .catch(() => {
+          this.showLoading = false;
+        });
     },
     goPay(orderNo) {
       this.$router.push({
         path: "/order/pay",
-        query:{
-          orderNo
-        } 
-      })
+        query: {
+          orderNo,
+        },
+      });
+    },
+    handleChange(pageNum) {
+      this.pageNum = pageNum;
+      this.getOrderList()
     }
   },
 };
